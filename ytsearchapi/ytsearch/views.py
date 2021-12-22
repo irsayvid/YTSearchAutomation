@@ -1,5 +1,6 @@
 from django.shortcuts import render
 import requests, json
+from .models import SearchResults
 
 def index(request):
     videos = []
@@ -17,7 +18,7 @@ def index(request):
             'part' : 'snippet',
             'q' : search_query,
             'key' : keys[0],
-            'maxResults' : 10,
+            'maxResults' : 15,
             'type' : 'video',
             
         }
@@ -34,6 +35,8 @@ def index(request):
                 'url' : f'https://www.youtube.com/watch?v={ result["id"]["videoId"] }',
                 'thumbnail' : result['snippet']['thumbnails']['high']['url'],
             }
+            store = SearchResults(video_id = video_data['video_id'], title = video_data['title'], description = video_data['description'], search_query = search_query, publish_datetime = video_data['publish_datetime'], thumbnail_url = video_data['thumbnail'])
+            store.save()
             videos.append(video_data)
         
 
@@ -42,3 +45,8 @@ def index(request):
     }
     
     return render(request, 'ytsearch/index.html', context)
+
+def fetchstored(request):
+    response = list(SearchResults.objects.order_by("-publish_datetime"))
+    context = {"response":response}
+    return render(request, 'ytsearch/fetchresults.html', context)

@@ -12,7 +12,7 @@
 - Once the project is created, click on enable APIs and services tab in dashboard
 - Search for YouTube data API and enable it
 - Now go to credentials and create API key
-- Generate as many as you want so that we'll use new once once the quota for one exhausts
+<!-- - Generate as many as you want so that we'll use new once the quota for one exhausts -->
 
 ### Setup Django environment and basic Setup
 
@@ -84,7 +84,6 @@
       search_query = models.CharField(max_length=255)
       publish_datetime = models.DateTimeField()
       thumbnail_url = models.URLField()
-      duration = models.DurationField()
       video_id = models.CharField(max_length=10)
 
       def __str__(self):

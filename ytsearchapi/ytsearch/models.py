@@ -5,7 +5,7 @@ class SearchResults(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     search_query = models.CharField(max_length=120)
-    publish_datetime = models.DateTimeField()
+    publish_datetime = models.DateTimeField(null=True)
     thumbnail_url = models.URLField()
 
     def __str__(self):

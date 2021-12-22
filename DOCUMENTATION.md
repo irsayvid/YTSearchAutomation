@@ -70,3 +70,45 @@
   ```
   python manage.py runserver
   ```
+
+### Write models to store the search results
+
+- Open `models.py` in `ytsearch` folder to design the models for database and add the following lines
+
+  ```py
+  from django.db import models
+
+  class SearchResults(models.Model):
+      title = models.CharField(max_length=255)
+      description = models.TextField()
+      search_query = models.CharField(max_length=255)
+      publish_datetime = models.DateTimeField()
+      thumbnail_url = models.URLField()
+      duration = models.DurationField()
+      video_id = models.CharField(max_length=10)
+
+      def __str__(self):
+          return self.video_id
+  ```
+
+- Register the model in `admin.py` to view in admin dashboard
+
+  ```py
+  from django.contrib import admin
+  from .models import SearchResults
+
+  admin.site.register(SearchResults)
+  ```
+
+- Now, let's create a table in the db and make migrations
+  ```
+  python manage.py makemigrations
+  python manage.py migrate
+  ```
+  You can see migrations made inside the migrations folder.
+- Let's check the tables using admin panel. To create superuser use command
+  ```
+  python manage.py createsuperuser
+  ```
+  Enter the required details like username, email and password
+- Now in the website navigate to `\admin` and login with the same credentials.

@@ -12,7 +12,6 @@
 - Once the project is created, click on enable APIs and services tab in dashboard
 - Search for YouTube data API and enable it
 - Now go to credentials and create API key
-<!-- - Generate as many as you want so that we'll use new once the quota for one exhausts -->
 
 ### Setup Django environment and basic Setup
 
@@ -36,13 +35,15 @@
   ```
   Django~=4.0
   requests~=2.26.0
-  djangorestframework~=3.13.1
   ```
 
 - Install all required package using the following command in terminal
   ```
   pip install -r requirements.txt
   ```
+
+### Create Django App
+
 - Create your Django project
 
   ```
@@ -54,18 +55,8 @@
   cd ytsearchapi
   python manage.py startapp ytsearch
   ```
-- Inside `settings.py` file of your ytsearch api add `rest_framework` and `ytsearch` inside the INSTALLED_APPS list.
+- Inside `settings.py` file of your ytsearch api `ytsearch` inside the INSTALLED_APPS list.
 
-- Inside the same file add the following lines to add REST_FRAMEWORK settings
-  ```py
-  REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-      'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-  }
-  ```
 - Run the app using the following command
   ```
   python manage.py runserver
@@ -79,12 +70,12 @@
   from django.db import models
 
   class SearchResults(models.Model):
+      video_id = models.CharField(max_length=16, primary_key=True)
       title = models.CharField(max_length=255)
       description = models.TextField()
-      search_query = models.CharField(max_length=255)
-      publish_datetime = models.DateTimeField()
-      thumbnail_url = models.URLField()
-      video_id = models.CharField(max_length=10)
+      search_query = models.CharField(max_length=120)
+      publish_datetime = models.DateTimeField(null=True)
+      thumbnail_url = models.JSONField(default=dict,null=True)
 
       def __str__(self):
           return self.video_id

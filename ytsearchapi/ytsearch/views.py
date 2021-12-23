@@ -68,19 +68,6 @@ def index(request):
     
     return render(request, 'ytsearch/index.html', context)
 
-def fetchstored(request, page=1):
-    response = list(SearchResults.objects.order_by("-publish_datetime"))
-    paginator = Paginator(response, 8)
-    try:
-        response = paginator.page(page)
-    except PageNotAnInteger:
-        response = paginator.page(1)
-    except EmptyPage:
-        # if we exceed the page limit we return the last page 
-        response = paginator.page(paginator.num_pages)
-    context = {"response":response}
-    return render(request, 'ytsearch/fetchresults.html', context)
-
 def fetchstored(request, query="", page=1):
     response = SearchResults.objects.order_by("-publish_datetime")
     print(query,page)

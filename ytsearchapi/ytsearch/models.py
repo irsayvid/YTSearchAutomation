@@ -6,7 +6,7 @@ class SearchResults(models.Model):
     description = models.TextField()
     search_query = models.CharField(max_length=120)
     publish_datetime = models.DateTimeField(null=True)
-    thumbnail_url = models.URLField()
+    thumbnail_url = models.JSONField(default=dict,null=True)
 
     def __str__(self):
         return self.video_id

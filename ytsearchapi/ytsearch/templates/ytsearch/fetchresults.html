@@ -39,5 +39,22 @@
         {%endfor%}
       </tbody>
     </table>
+    <!-- Pagination -->
+    <div class="pagination justify-content-center">
+      {% if response.has_previous %}
+      <a href='{% url "fetchstored" response.previous_page_number %}'>
+        Previous
+      </a>
+      {% endif %}
+
+      <span class="mx-4">
+        Page {{ response.number }} of {{ response.paginator.num_pages }}
+      </span>
+
+      {% if response.has_next %}
+      <a href='{% url "fetchstored" response.next_page_number %}'>Next</a>
+      {% endif %}
+    </div>
+    <!-- END Pagination -->
   </body>
 </html>

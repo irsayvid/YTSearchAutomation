@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 import requests, json
 from .models import SearchResults
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -62,8 +63,11 @@ def fetchstored(request, page=1):
 
 def fetchstored(request, query="", page=1):
     response = SearchResults.objects.order_by("-publish_datetime")
-    if query is None or query != "":
-        response = response.filter(search_query=query)
+    print(query,page)
+    if (query is None) or (query != "" and query!="_all"):
+        response = response.filter(Q(title__icontains=query)|Q(search_query__icontains=query))
+    else:
+        query="_all"
     paginator = Paginator(response, 8)
     try:
         response = paginator.page(page)
@@ -72,5 +76,5 @@ def fetchstored(request, query="", page=1):
     except EmptyPage:
         # if we exceed the page limit we return the last page 
         response = paginator.page(paginator.num_pages)
-    context = {"response":response}
+    context = {"response":response, "query":query}
     return render(request, 'ytsearch/fetchresults.html', context)
